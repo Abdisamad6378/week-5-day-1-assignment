@@ -73,6 +73,19 @@ app.post("/api/cities", (req, res) => {
   res.status(201).json({ success: true, data: newCity });
 });
 
+app.delete("/api/cities/:id", (req, res) => {
+  const id = Number(req.params.id);
+  const index = findCityIndex(id);
+
+  if (index === -1) {
+    return res.status(404).json({ success: false, error: `City with ID ${id} not found` });
+  }
+
+  const [deletedCity] = cities.splice(index, 1);
+
+  res.status(200).json({ success: true, message: "City deleted", data: deletedCity });
+});
+
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
