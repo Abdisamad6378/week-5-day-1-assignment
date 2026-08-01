@@ -16,7 +16,21 @@ let cities = [
 ];
 
 app.get("/api/cities", (req, res) => {
-  res.status(200).json({ success: true, count: cities.length, data: cities });
+  const { county, minPopulation } = req.query;
+
+  let result = [...cities];
+
+  if (county) {
+    result = result.filter(
+      (city) => city.county.toLowerCase() === county.toLowerCase()
+    );
+  }
+
+  if (minPopulation) {
+    result = result.filter((city) => city.population > Number(minPopulation));
+  }
+
+  res.status(200).json({ success: true, count: result.length, data: result });
 });
 
 const PORT = process.env.PORT || 3000;
