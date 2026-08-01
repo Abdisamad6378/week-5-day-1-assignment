@@ -52,6 +52,23 @@ app.get("/api/cities", (req, res) => {
   res.status(200).json({ success: true, count: result.length, data: result });
 });
 
+app.post("/api/cities", (req, res) => {
+  const { valid, error, value } = validateCity(req.body);
+
+  if (!valid) {
+    return res.status(400).json({ success: false, error });
+  }
+
+  const newCity = {
+    id: cities[cities.length - 1].id + 1,
+    ...value
+  };
+
+  cities.push(newCity);
+
+  res.status(201).json({ success: true, data: newCity });
+});
+
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
