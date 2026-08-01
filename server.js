@@ -34,6 +34,10 @@ function validateCity(body) {
   return { valid: true, value: { name: name.trim(), county: county.trim(), population } };
 }
 
+function findCityIndex(id) {
+  return cities.findIndex((city) => city.id === id);
+}
+
 app.get("/api/cities", (req, res) => {
   const { county, minPopulation } = req.query;
 
