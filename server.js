@@ -15,6 +15,25 @@ let cities = [
   { id: 8, name: "Kitale", county: "Trans-Nzoia", population: 220111 }
 ];
 
+function validateCity(body) {
+  const { name, county, population } = body;
+
+  if (
+    typeof name !== "string" ||
+    name.trim() === "" ||
+    typeof county !== "string" ||
+    county.trim() === ""
+  ) {
+    return { valid: false, error: "Name and county are required" };
+  }
+
+  if (typeof population !== "number" || !Number.isFinite(population) || population <= 0) {
+    return { valid: false, error: "Population must be a positive number" };
+  }
+
+  return { valid: true, value: { name: name.trim(), county: county.trim(), population } };
+}
+
 app.get("/api/cities", (req, res) => {
   const { county, minPopulation } = req.query;
 
